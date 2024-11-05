@@ -2,27 +2,26 @@
   "messages": [
     {
       "role": "user",
-      "content": "what is my name?",
-      "id": "bd80859c-cd9f-4b41-9c50-0b5761c2657a",
-      "createdAt": "2024-11-05T17:40:01.921Z"
+      "content": "how is the weather?",
+      "id": "9b6e5ffd-56da-4042-a503-d292cd79d093",
+      "createdAt": "2024-11-05T19:34:16.767Z"
     },
     {
       "role": "assistant",
-      "content": "I'm sorry, but I don't have access to personal information about users unless it has been shared with me in the course of our conversation. If you'd like, you can tell me your name!",
-      "id": "f30a762d-a5f4-4754-9120-667de2f44c37",
-      "createdAt": "2024-11-05T17:40:02.824Z"
-    },
-    {
-      "role": "user",
-      "content": "My name is Scott",
-      "id": "a884ba5b-8ec3-482a-bd6c-18babe76ec05",
-      "createdAt": "2024-11-05T17:40:28.739Z"
-    },
-    {
-      "role": "assistant",
-      "content": "Nice to meet you, Scott! How can I assist you today?",
-      "id": "70a9b0ae-a6ec-4523-a4dd-81ce5c27e080",
-      "createdAt": "2024-11-05T17:40:29.361Z"
+      "content": null,
+      "tool_calls": [
+        {
+          "id": "call_Pd2L6OWnviQmRf7RicWtvE6Y",
+          "type": "function",
+          "function": {
+            "name": "get_stuff",
+            "arguments": "{\"reasoning\":\"To provide accurate weather information.\"}"
+          }
+        }
+      ],
+      "refusal": null,
+      "id": "7c3e8fdd-f7f8-4103-9ac4-a361671aca41",
+      "createdAt": "2024-11-05T19:34:17.996Z"
     }
   ]
 }
