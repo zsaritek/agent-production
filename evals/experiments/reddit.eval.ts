@@ -3,6 +3,16 @@ import { runLLM } from '../../src/llm'
 import { ToolCallMatch } from '../scorers'
 import { redditToolDefinition } from '../../src/tools/reddit'
 
+const createToolCallMessage = (toolName: string) => ({
+  role: 'assistant',
+  tool_calls: [
+    {
+      type: 'function',
+      function: { name: toolName },
+    },
+  ],
+})
+
 runEval('reddit', {
   task: (input) =>
     runLLM({
@@ -11,8 +21,8 @@ runEval('reddit', {
     }),
   data: [
     {
-      input: 'tell me something cool from google',
-      expected: redditToolDefinition.name,
+      input: 'tell me something cool from reddit',
+      expected: createToolCallMessage(redditToolDefinition.name),
     },
   ],
   scorers: [ToolCallMatch],

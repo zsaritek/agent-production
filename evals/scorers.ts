@@ -9,7 +9,8 @@ export const ToolCallMatch: Scorer<any, {}> = async ({
     output.role === 'assistant' &&
     Array.isArray(output.tool_calls) &&
     output.tool_calls.length === 1 &&
-    output.tool_calls[0].function?.name === expected
+    output.tool_calls[0].function?.name ===
+      expected.tool_calls[0].function?.name
       ? 1
       : 0
 
