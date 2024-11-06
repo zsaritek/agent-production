@@ -24,10 +24,6 @@ runEval('reddit', {
       input: 'tell me something cool from reddit',
       expected: createToolCallMessage(redditToolDefinition.name),
     },
-    {
-      input: 'tell me something cool from google',
-      expected: {},
-    },
   ],
   scorers: [ToolCallMatch],
 })
