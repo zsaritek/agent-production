@@ -1,4 +1,4 @@
-import type { Score, Scorer } from 'autoevals'
+import type { Scorer } from 'autoevals'
 
 export const ToolCallMatch: Scorer<any, {}> = async ({
   input,
