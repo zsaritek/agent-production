@@ -2,23 +2,33 @@ import 'dotenv/config'
 import { join } from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
+import { readdir } from 'fs/promises'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const main = async () => {
   const evalName = process.argv[2]
-
-  if (!evalName) {
-    console.error('Please provide an eval name')
-    process.exit(1)
-  }
+  const experimentsDir = join(__dirname, 'experiments')
 
   try {
-    const evalPath = join(__dirname, 'experiments', `${evalName}.eval.ts`)
-    await import(evalPath)
+    if (evalName) {
+      const evalPath = join(experimentsDir, `${evalName}.eval.ts`)
+      await import(evalPath)
+    } else {
+      const files = await readdir(experimentsDir)
+      const evalFiles = files.filter((file) => file.endsWith('.eval.ts'))
+
+      for (const evalFile of evalFiles) {
+        const evalPath = join(experimentsDir, evalFile)
+        await import(evalPath)
+      }
+    }
   } catch (error) {
-    console.error(`Failed to load eval '${evalName}':`, error)
+    console.error(
+      `Failed to run eval${evalName ? ` '${evalName}'` : 's'}:`,
+      error
+    )
     process.exit(1)
   }
 }

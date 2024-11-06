@@ -138,11 +138,13 @@ export const runEval = async <T = any>(
       : chalk.blue
     : chalk.blue
 
+  console.log(`Experiment: ${experiment}`)
   console.log(`Previous score: ${color(previousScore.toFixed(2))}`)
   console.log(`Current score: ${color(currentScore.toFixed(2))}`)
   console.log(
     `Difference: ${scoreDiff > 0 ? '+' : ''}${color(scoreDiff.toFixed(2))}`
   )
+  console.log()
 
   await saveSet(experiment, results)
 
