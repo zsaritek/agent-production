@@ -10,7 +10,7 @@ export const movieSearchToolDefinition = {
     director: z.string().optional().describe('Filter movies by director'),
   }),
   description:
-    'Use this to answer questions about movies, including title, year, genre, director, actors, rating, and description',
+    'Searches for movies and information about them, including title, year, genre, director, actors, rating, and description. Use this to answer questions about movies.',
 }
 
 type Args = z.infer<typeof movieSearchToolDefinition.parameters>

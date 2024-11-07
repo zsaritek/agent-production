@@ -85,3 +85,36 @@ export const runAgent = async ({
     }
   }
 }
+
+export const runAgentEval = async ({
+  userMessage,
+  tools,
+}: {
+  userMessage: string
+  tools: any[]
+}) => {
+  let messages: AIMessage[] = [{ role: 'user', content: userMessage }]
+
+  while (true) {
+    const response = await runLLM({ messages, tools })
+    messages = [...messages, response]
+
+    if (response.content) {
+      return messages
+    }
+
+    if (response.tool_calls) {
+      const toolCall = response.tool_calls[0]
+
+      if (toolCall.function.name === generateImageToolDefinition.name) {
+        return messages
+      }
+
+      const toolResponse = await runTool(toolCall, userMessage)
+      messages = [
+        ...messages,
+        { role: 'tool', content: toolResponse, tool_call_id: toolCall.id },
+      ]
+    }
+  }
+}

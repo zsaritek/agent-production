@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import type { Score, Scorer } from 'autoevals'
 import chalk from 'chalk'
 import { JSONFilePreset } from 'lowdb/node'
@@ -95,17 +96,32 @@ export const runEval = async <T = any>(
     scorers,
   }: {
     task: (input: any) => Promise<T>
-    data: { input: any; expected: T }[]
+    data: { input: any; expected?: T; reference?: string | string[] }[]
     scorers: Scorer<T, any>[]
   }
 ) => {
   const results = await Promise.all(
-    data.map(async ({ input, expected }) => {
-      const output = await task(input)
+    data.map(async ({ input, expected, reference }) => {
+      const results = await task(input)
+      let context: string | string[]
+      let output: string
+
+      if (results.context) {
+        context = results.context
+        output = results.response
+      } else {
+        output = results
+      }
 
       const scores = await Promise.all(
         scorers.map(async (scorer) => {
-          const score = await scorer({ input, output, expected })
+          const score = await scorer({
+            input,
+            output: results,
+            expected,
+            reference,
+            context,
+          })
           return {
             name: score.name,
             score: score.score,
