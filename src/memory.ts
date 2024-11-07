@@ -39,9 +39,35 @@ export const addMessages = async (messages: AIMessage[]) => {
   await db.write()
 }
 
-export const getMessages = async () => {
+export const getMessages = async (n?: number) => {
   const db = await getDb()
-  return db.data.messages.map(removeMetadata)
+  const messages = db.data.messages.map(removeMetadata)
+
+  if (!n) {
+    return messages
+  }
+
+  // Get last n messages
+  const lastN = messages.slice(-n)
+
+  // Check if first message is assistant with content
+  if (
+    lastN.length > 0 &&
+    (lastN[0].role !== 'assistant' || !lastN[0].content)
+  ) {
+    // Find first valid assistant message
+    const firstValidIndex = messages.findIndex(
+      (m) => m.role === 'assistant' && m.content
+    )
+
+    if (firstValidIndex >= 0) {
+      // Return messages from first valid assistant message
+      return messages.slice(firstValidIndex, firstValidIndex + n)
+    }
+    return []
+  }
+
+  return lastN
 }
 
 export const saveToolResponse = async (
